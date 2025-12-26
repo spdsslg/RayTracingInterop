@@ -22,7 +22,6 @@ So the C++ ray tracer is wrapped behind a C-compatible API:
   * writes the result to `output.ppm`.
 * During rendering, the native code reports partial progress via a callback after each rendered tile.
 
----
 
 ## Interop details (unsafe + function pointers)
 
@@ -61,7 +60,6 @@ Tile (32,0) 32x32
 ...
 ```
 
----
 
 ## Project layout
 
@@ -87,7 +85,6 @@ Tile (32,0) 32x32
          └─ Program.cs          # alloc buffer, call rt_render, save output.ppm
 ```
 
----
 
 ## Build & Run (macOS / Linux)
 
@@ -151,9 +148,8 @@ xdg-open out.ppm
 You should see:
 
 * console tile progress
-* `out.ppm` rendered (a noisy RTIOW scene)
+* `out.ppm` a noisy rendered scene
 
----
 
 ## Third-party code / License
 
