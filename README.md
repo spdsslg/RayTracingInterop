@@ -8,6 +8,8 @@ So the C++ ray tracer is wrapped behind a C-compatible API:
 * raw pointers (`uint8_t* out_rgba`)
 * function pointer callback (`rt_tile_callback`)
 
+**IMPORTANT NOTE**: This project uses source code of the C++ implementation of Peter Shirley's "Ray Tracing in One Weekend" from this repo `https://github.com/utilForever/ray-tracing-in-one-weekend-cpp`. I do not own any of the implementations that are directly copied/modified from it.
+
 
 ## Overview
 
