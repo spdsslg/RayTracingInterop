@@ -25,6 +25,7 @@ public static unsafe class Native
         delegate* unmanaged[Cdecl]<int,int,int,int,byte*,int,void> cb
     );
 
+    //makes c# method callable from native code
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
     public static void OnTile(int x, int y, int w, int h, byte* rgba, int stride)
     {

@@ -29,7 +29,7 @@ So the C++ ray tracer is wrapped behind a C-compatible API:
 
 ## Interop details (unsafe and function pointers)
 
-### `unsafe` and pinned buffer
+#### unsafe and pinned buffer
 
 The renderer writes pixels into an RGBA output buffer:
 
@@ -39,14 +39,12 @@ The renderer writes pixels into an RGBA output buffer:
 
 Pinning is needed because the Garbage collector can move managed arrays in memory.
 
-### `delegate*` + `[UnmanagedCallersOnly]` callback
+#### delegate* + `[UnmanagedCallersOnly]` callback
 
 To support **partial/progressive output**, the native renderer calls back after finishing each tile.
 
 * C# passes a native function pointer: `&Native.OnTile`
-* `OnTile` is marked with:
-
-  * `[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]`
+* `OnTile` is marked with: `[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]`
 * The callback signature matches the C function pointer type exactly and uses the same calling convention (`cdecl`).
 
 The callback receives:
@@ -56,7 +54,7 @@ The callback receives:
 * a pointer to the tile’s pixel data inside the full buffer
 * `stride_bytes`
 
-In this project the callback prints progress like:
+The callback prints progress like:
 
 ```
 Tile (0,0) 32x32
