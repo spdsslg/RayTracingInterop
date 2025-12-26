@@ -1,6 +1,7 @@
-# RayTracingInterop (C# ↔ C ABI ↔ C++)
+# RayTracingInterop (C# C ABI C++)
+![Preview](docs/out.png)
 
-This project renders the **“Ray Tracing in One Weekend”** image using **native C++ code**, but runs the render from **C#** using interop.
+This project renders the “Ray Tracing in One Weekend” image using native C++ code, but runs the render from **C#** using interop.
 The C++ renderer is exposed through a **C ABI** (flat `extern "C"` API), and the C# app calls it using **P/Invoke** + **unsafe pointers** + a **native callback** implemented with `delegate*` and `[UnmanagedCallersOnly]`.C# cannot reliably call C++ classes/templates directly.
 So the C++ ray tracer is wrapped behind a C-compatible API:
 
@@ -10,10 +11,9 @@ So the C++ ray tracer is wrapped behind a C-compatible API:
 
 **IMPORTANT NOTE**: This project uses source code of the C++ implementation of Peter Shirley's "Ray Tracing in One Weekend" from this repo `https://github.com/utilForever/ray-tracing-in-one-weekend-cpp`. I do not own any of the implementations that are directly copied/modified from it.
 
-
 ## Overview
 
-* Builds a **native shared library** (`librtweekend.dylib` on macOS, `librtweekend.so` on Linux and `librtweekend.dll` on Windows) containing the ray tracer.
+* Builds a native shared library (`librtweekend.dylib` on macOS, `librtweekend.so` on Linux and `librtweekend.dll` on Windows) containing the ray tracer.
 * Exposes a single exported function:
   * `rt_render(settings*, out_rgba, stride_bytes, callback)`
 * The C# program:
@@ -25,9 +25,9 @@ So the C++ ray tracer is wrapped behind a C-compatible API:
 * During rendering, the native code reports partial progress via a callback after each rendered tile.
 
 
-## Interop details (unsafe + function pointers)
+## Interop details (unsafe and function pointers)
 
-### `unsafe` + pinned buffer
+### `unsafe` and pinned buffer
 
 The renderer writes pixels into an RGBA output buffer:
 
@@ -92,9 +92,9 @@ Tile (32,0) 32x32
 
 ### Requirements
 
-* .NET SDK (matching the project’s `TargetFramework`, e.g. `net9.0`)
+* .NET SDK (matching `net9.0`)
 * CMake
-* A C++ compiler (Clang or GCC)
+* A C++ compiler 
 
 ### 1) Build native library
 
@@ -157,5 +157,5 @@ You should see:
 
 This project uses the C++ RTIOW implementation from:
 
-utilForever/ray-tracing-in-one-weekend-cpp (MIT license)
+https://github.com/utilForever/ray-tracing-in-one-weekend-cpp (MIT license)
 
