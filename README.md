@@ -1,5 +1,7 @@
 # RayTracingInterop (C# C ABI C++)
-![Preview](docs/out.png)
+<p align="center">
+  <img src="docs/out.png" alt="Preview" width="400">
+</p>
 
 This project renders the “Ray Tracing in One Weekend” image using native C++ code, but runs the render from **C#** using interop.
 The C++ renderer is exposed through a **C ABI** (flat `extern "C"` API), and the C# app calls it using **P/Invoke** + **unsafe pointers** + a **native callback** implemented with `delegate*` and `[UnmanagedCallersOnly]`.C# cannot reliably call C++ classes/templates directly.
