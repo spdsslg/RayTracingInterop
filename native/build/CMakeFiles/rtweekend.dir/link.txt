@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -arch arm64 -dynamiclib -Wl,-headerpad_max_install_names -o librtweekend.dylib -install_name @rpath/librtweekend.dylib CMakeFiles/rtweekend.dir/src/rt_capi.cpp.o

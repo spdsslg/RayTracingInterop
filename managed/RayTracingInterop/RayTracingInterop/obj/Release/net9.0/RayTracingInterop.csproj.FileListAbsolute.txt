@@ -1,0 +1,14 @@
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/bin/Release/net9.0/RayTracingInterop
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/bin/Release/net9.0/RayTracingInterop.deps.json
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/bin/Release/net9.0/RayTracingInterop.runtimeconfig.json
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/bin/Release/net9.0/RayTracingInterop.dll
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/bin/Release/net9.0/RayTracingInterop.pdb
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/RayTracingInterop.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/RayTracingInterop.AssemblyInfoInputs.cache
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/RayTracingInterop.AssemblyInfo.cs
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/RayTracingInterop.csproj.CoreCompileInputs.cache
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/RayTracingInterop.dll
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/refint/RayTracingInterop.dll
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/RayTracingInterop.pdb
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/RayTracingInterop.genruntimeconfig.cache
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/ref/RayTracingInterop.dll

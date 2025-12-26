@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/mihailmoroz/c_sharp/RayTracingInterop/native/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
