@@ -3,7 +3,7 @@
   <img src="docs/out.png" alt="Preview" width="400">
 </p>
 
-This project renders the “Ray Tracing in One Weekend” image using native C++ code, but runs the render from **C#** using interop.
+This project renders the "Ray Tracing in One Weekend" image using native C++ code, but runs the render from **C#** using interop.
 The C++ renderer is exposed through a **C ABI** (flat `extern "C"` API), and the C# app calls it using **P/Invoke** + **unsafe pointers** + a **native callback** implemented with `delegate*` and `[UnmanagedCallersOnly]`.C# cannot reliably call C++ classes/templates directly.
 So the C++ ray tracer is wrapped behind a C-compatible API:
 
@@ -15,17 +15,33 @@ So the C++ ray tracer is wrapped behind a C-compatible API:
 
 ## Overview
 
-* Builds a native shared library (`librtweekend.dylib` on macOS, `librtweekend.so` on Linux and `librtweekend.dll` on Windows) containing the ray tracer.
-* Exposes a single exported function:
-  * `rt_render(settings*, out_rgba, stride_bytes, callback)`
-* The C# program:
+### What it builds
+- A native shared library:
+  - macOS: `librtweekend.dylib`
+  - Linux: `librtweekend.so`
+  - Windows: `rtweekend.dll`
+- A managed C# executable that:
+  - constructs a custom scene (camera/materials/spheres) via the C API,
+  - allocates an `RGBA` output buffer,
+  - calls the native renderer,
+  - writes the final image to `out.ppm`.
 
-  * allocates a `byte[]` RGBA buffer for the image,
-  * pins it with `fixed`, so the GC won’t move it,
-  * calls the native renderer,
-  * writes the result to `output.ppm`.
-* During rendering, the native code reports partial progress via a callback after each rendered tile.
+**You can modify the scene in Program.cs**
 
+### Exported API (native)
+This project exposes **scene-building** functions so the user can render a custom scene:
+
+- World lifecycle:
+  - `rt_world_create`, `rt_world_destroy`, `rt_world_clear`
+- Materials:
+  - `rt_material_lambertian`, `rt_material_metal`, `rt_material_dielectric`, `rt_material_destroy`
+- Camera:
+  - `rt_camera_create`, `rt_camera_destroy`
+- Geometry:
+  - `rt_world_add_sphere`
+- Rendering:
+  - `rt_render_scene(settings, world, camera, out_rgba, stride, callback)` renders the scene created through the API
+  - `rt_render(settings, out_rgba, stride, callback)` preset demo scene (book cover), kept for testing
 
 ## Interop details (unsafe and function pointers)
 
@@ -45,13 +61,12 @@ To support **partial/progressive output**, the native renderer calls back after 
 
 * C# passes a native function pointer: `&Native.OnTile`
 * `OnTile` is marked with: `[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]`
-* The callback signature matches the C function pointer type exactly and uses the same calling convention (`cdecl`).
 
 The callback receives:
 
 * tile position `(x, y)`
 * tile size `(w, h)`
-* a pointer to the tile’s pixel data inside the full buffer
+* a pointer to the tile's pixel data inside the full buffer
 * `stride_bytes`
 
 The callback prints progress like:
