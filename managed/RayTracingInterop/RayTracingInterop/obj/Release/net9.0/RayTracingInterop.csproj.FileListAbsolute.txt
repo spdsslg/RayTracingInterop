@@ -12,3 +12,4 @@
 /Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/RayTracingInterop.pdb
 /Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/RayTracingInterop.genruntimeconfig.cache
 /Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/ref/RayTracingInterop.dll
+/Users/mihailmoroz/c_sharp/RayTracingInterop/managed/RayTracingInterop/RayTracingInterop/obj/Release/net9.0/RayTracingInterop.sourcelink.json

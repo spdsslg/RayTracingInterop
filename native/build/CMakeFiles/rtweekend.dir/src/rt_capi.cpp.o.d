@@ -25,7 +25,6 @@ CMakeFiles/rtweekend.dir/src/rt_capi.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
-  /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/camera.h \
   /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/common.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/functional \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/search.h \
@@ -1009,10 +1008,11 @@ CMakeFiles/rtweekend.dir/src/rt_capi.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__format/formatter_tuple.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/print \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/unistd.h \
-  /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/dielectric.h \
+  /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/hittable_list.h \
   /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/hittable.h \
+  /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/camera.h \
+  /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/dielectric.h \
   /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/material.h \
   /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/metal.h \
   /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/sphere.h \
-  /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/lambertian.h \
-  /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/hittable_list.h
+  /Users/mihailmoroz/c_sharp/RayTracingInterop/native/src/book/lambertian.h
