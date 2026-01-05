@@ -1,6 +1,6 @@
 namespace RayTracingInterop;
 
-internal sealed class Dielectric : Material
+internal class Dielectric : Material
 {
     public Dielectric(double refIdx) : base(Native.MaterialDielectric(refIdx)) { }
 }

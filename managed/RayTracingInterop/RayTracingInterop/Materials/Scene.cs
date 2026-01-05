@@ -1,7 +1,7 @@
 namespace RayTracingInterop;
 using System;
 
-public sealed class Scene : IDisposable
+public class Scene : IDisposable
 {
     internal WorldHandle Handle { get; }
 
