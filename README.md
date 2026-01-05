@@ -35,12 +35,12 @@ This project exposes **scene-building** functions so the user can render a custo
   - `rt_world_create`, `rt_world_destroy`, `rt_world_clear`
 - Materials:
   - `rt_material_lambertian`, `rt_material_metal`, `rt_material_dielectric`, `rt_material_destroy`
-- Camera:
-  - `rt_camera_create`, `rt_camera_destroy`
+- Camera(blittable struct):
+  - `rt_render_scene` takes `const rt_camera*` (C) / `Camera*` (C#)
 - Geometry:
   - `rt_world_add_sphere`
 - Rendering:
-  - `rt_render_scene(settings, world, camera, out_rgba, stride, callback)` renders the scene 
+  - `rt_render_scene(settings, camera, world, out_rgba, stride, callback)` renders the scene 
 
 ## Interop details (unsafe and function pointers)
 
