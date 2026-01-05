@@ -15,6 +15,16 @@ typedef struct rt_vec3{
     double x,y,z;
 }rt_vec3;
 
+typedef struct rt_camera {
+    rt_vec3 lookfrom;
+    rt_vec3 lookat;
+    rt_vec3 vup;
+    double vfov_degrees;
+    double aspect_ratio;
+    double aperture;
+    double focus_dist;
+} rt_camera;
+
 typedef struct rt_settings{
     int width;
     int height;
@@ -36,7 +46,7 @@ typedef void (*rt_tile_callback)(
 
 //void* so that c# can communicate with c++ without knowing its memory layout
 typedef void* rt_world_t;
-typedef void* rt_camera_t;
+// typedef void* rt_camera_t;
 typedef void* rt_material_t;
 
 //for world
@@ -50,13 +60,13 @@ RT_API rt_material_t rt_material_metal(rt_vec3 a, double b);
 RT_API rt_material_t rt_material_dielectric(double c);
 RT_API void rt_material_destroy(rt_material_t material);
 
-RT_API rt_camera_t rt_camera_create(rt_vec3 lookfrom, rt_vec3 lookat, rt_vec3 vup, double degrees, double aspect_ratio, double aperture, double focus_dist);
-RT_API void rt_camera_destroy(rt_camera_t cam);
+// RT_API rt_camera_t rt_camera_create(rt_vec3 lookfrom, rt_vec3 lookat, rt_vec3 vup, double degrees, double aspect_ratio, double aperture, double focus_dist);
+// RT_API void rt_camera_destroy(rt_camera_t cam);
 
 RT_API int rt_world_add_sphere(rt_world_t world, rt_vec3 center, double radius, rt_material_t material);
 
-RT_API int rt_render_scene(const rt_settings* s, rt_world_t world, rt_camera_t camera, uint8_t* out_rgba, int stride_bytes, rt_tile_callback cb);
-RT_API int rt_render(const rt_settings* s, uint8_t* out_rgba, int stride_bytes, rt_tile_callback cb);
+RT_API int rt_render_scene(const rt_settings* s, const rt_camera* cam, rt_world_t world, uint8_t* out_rgba, int stride_bytes, rt_tile_callback cb);
+// RT_API int rt_render(const rt_settings* s, uint8_t* out_rgba, int stride_bytes, rt_tile_callback cb);
 
 #ifdef __cplusplus
 }

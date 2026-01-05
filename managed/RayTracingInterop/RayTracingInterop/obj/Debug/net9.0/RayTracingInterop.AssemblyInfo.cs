@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RayTracingInterop")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cd3bbf2367b333b3d64fa1d98b53f3eea23e73ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d996ef4561157d8dfdf2ecee9312567bfa448e6c")]
 [assembly: System.Reflection.AssemblyProductAttribute("RayTracingInterop")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RayTracingInterop")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

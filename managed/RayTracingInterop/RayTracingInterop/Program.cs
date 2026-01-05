@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+namespace RayTracingInterop;
 
 unsafe class Program
 {
@@ -10,47 +11,38 @@ unsafe class Program
         int stride = 4*width;
         
         byte[] rgba = new byte[stride * height];
-
-        var s = new Native.RtSettings
-        {
+        
+        var settings = new RenderSettings {
             width = width,
             height = height,
-            samples_per_pixel = 100,
-            max_depth = 50,
-            seed = 123,
+            samples_per_pixel = 50,
+            max_depth = 10,
             tile_size = 32,
+            seed = 0
         };
         
-        nint world = Native.rt_world_create(); 
-        nint ground = Native.rt_material_lambertian(new Native.RtVec3 { x=0.5, y=0.5, z=0.5 });
-        Native.rt_world_add_sphere(world, new Native.RtVec3 { x=0, y=-1000, z=0 }, 1000, ground);
-        nint glass = Native.rt_material_dielectric(1.5);
-        Native.rt_world_add_sphere(world, new Native.RtVec3 { x=0, y=1, z=0 }, 1.0, glass);
+        var camera = new Camera {
+            lookfrom = new Vec3(13,2,3),
+            lookat = new Vec3(0,0,0),
+            vup = new Vec3(0,1,0),
+            vfov_degrees = 20,
+            aspect_ratio = (double)width / height,
+            aperture = 0.1,
+            focus_dist = 10.0
+        };
         
-        double aspect = (double)width / height;
-        nint cam = Native.rt_camera_create(new Native.RtVec3{ x=13, y=2, z=3 }, new Native.RtVec3{ x=0, y=0, z=0 },
-            new Native.RtVec3{ x=0, y=1, z=0 },
-            20, aspect, 0.1, 10.0
-        );
+        using var scene = new Scene();
+        using var ground = new Lambertian(new Vec3(0.5,0.5,0.5));
+        using var glass = new Dielectric(1.5);
 
-        fixed (byte* pOut = rgba)
-        {
-            Native.RtSettings* ps = &s;
-            
-            int rc = Native.rt_render_scene(ps, world, cam, pOut, stride, &Native.OnTile);
-            if (rc != 0)
-            {
-                Console.Error.WriteLine($"rt_render failed: {rc}");
-                Environment.Exit(1);
-            }
-        }
+        scene.AddSphere(new Vec3(0,-1000,0), 1000, ground);
+        scene.AddSphere(new Vec3(0,1,0), 1.0, glass);
+
+        int rc = scene.Render(camera, settings, rgba);
+        if (rc != 0) Console.Error.WriteLine($"Render failed: {rc}");
         
         SavePpm("out.ppm",rgba, width, height, stride);
         
-        Native.rt_camera_destroy(cam);
-        Native.rt_material_destroy(glass);
-        Native.rt_material_destroy(ground);
-        Native.rt_world_destroy(world);
     }
 
     static void SavePpm(string path, byte[] rgba, int width, int height, int stride)

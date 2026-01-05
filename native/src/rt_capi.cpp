@@ -29,10 +29,6 @@ struct MaterialWrap {
     shared_ptr<material> mat;
 };
 
-struct CameraWrap {
-    camera cam;
-    CameraWrap(const camera& c) : cam(c) {}
-};
 
 vec3 to_vec3(rt_vec3 v) { 
     return vec3{v.x, v.y, v.z}; 
@@ -152,14 +148,6 @@ void rt_material_destroy(rt_material_t material) {
     delete static_cast<MaterialWrap*>(material);
 }
 
-rt_camera_t rt_camera_create(rt_vec3 lookfrom, rt_vec3 lookat, rt_vec3 vup, double degrees, double aspect_ratio, double aperture, double focus_dist) {
-    camera cam(to_vec3(lookfrom), to_vec3(lookat), to_vec3(vup), degrees, aspect_ratio, aperture, focus_dist);
-    return new CameraWrap{cam};
-}
-
-void rt_camera_destroy(rt_camera_t cam) {
-    delete static_cast<CameraWrap*>(cam);
-}
 
 int rt_world_add_sphere(rt_world_t world, rt_vec3 center, double radius, rt_material_t material) {
     if (world==NULL || material==NULL) return 1;
@@ -170,8 +158,8 @@ int rt_world_add_sphere(rt_world_t world, rt_vec3 center, double radius, rt_mate
     return 0;
 }
 
-int rt_render_scene(const rt_settings* s, rt_world_t world, rt_camera_t camera, uint8_t* out_rgba, int stride_bytes, rt_tile_callback cb){
-    if(!s || !out_rgba){
+int rt_render_scene(const rt_settings* s, const rt_camera* cam_s, rt_world_t world, uint8_t* out_rgba, int stride_bytes, rt_tile_callback cb){
+    if(!s || !out_rgba || !cam_s || !world){
         return 1;
     } 
     if(s->width<=0 || s->height<=0){
@@ -188,7 +176,10 @@ int rt_render_scene(const rt_settings* s, rt_world_t world, rt_camera_t camera, 
     int tile = (s->tile_size > 0) ? s->tile_size : 32;
 
     auto* wwrap = static_cast<WorldWrap*>(world);
-    auto* cwrap = static_cast<CameraWrap*>(camera);
+    camera cam(to_vec3(cam_s->lookfrom),to_vec3(cam_s->lookat),to_vec3(cam_s->vup),
+      cam_s->vfov_degrees,cam_s->aspect_ratio,cam_s->aperture,cam_s->focus_dist);
+
+    
 
     //render tiles
     for(int i_y=0;i_y<s->height;i_y+=tile){
@@ -206,7 +197,7 @@ int rt_render_scene(const rt_settings* s, rt_world_t world, rt_camera_t camera, 
                         const auto u = (x + random_double()) / image_width;
                         const auto v = (j + random_double()) / image_height;
 
-                        ray r = cwrap->cam.get_ray(u, v);
+                        ray r = cam.get_ray(u, v);
                         pixel_color += ray_color(r, wwrap->world, max_depth);
                     }
 
@@ -233,75 +224,75 @@ int rt_render_scene(const rt_settings* s, rt_world_t world, rt_camera_t camera, 
 
 //function below is for creating the image from the cover
 
-int rt_render(const rt_settings* s, uint8_t* out_rgba, int stride_bytes, rt_tile_callback cb){
-    if(!s || !out_rgba){
-        return 1;
-    } 
-    if(s->width<=0 || s->height<=0){
-        return 2;
-    }
-    if(stride_bytes<s->width*4){ //to avoid overlap
-        return 3;
-    }
+// int rt_render(const rt_settings* s, uint8_t* out_rgba, int stride_bytes, rt_tile_callback cb){
+//     if(!s || !out_rgba){
+//         return 1;
+//     } 
+//     if(s->width<=0 || s->height<=0){
+//         return 2;
+//     }
+//     if(stride_bytes<s->width*4){ //to avoid overlap
+//         return 3;
+//     }
 
-    int image_width  = s->width;
-    int image_height = s->height;
-    int samples_per_pixel = (s->samples_per_pixel > 0) ? s->samples_per_pixel : 10;
-    int max_depth = (s->max_depth > 0) ? s->max_depth : 10;
-    int tile = (s->tile_size > 0) ? s->tile_size : 32;
+//     int image_width  = s->width;
+//     int image_height = s->height;
+//     int samples_per_pixel = (s->samples_per_pixel > 0) ? s->samples_per_pixel : 10;
+//     int max_depth = (s->max_depth > 0) ? s->max_depth : 10;
+//     int tile = (s->tile_size > 0) ? s->tile_size : 32;
 
-    auto aspect_ratio = static_cast<double>(image_width) / image_height;
+//     auto aspect_ratio = static_cast<double>(image_width) / image_height;
 
-    //scene+camera
-    auto world = random_scene();
+//     //scene+camera
+//     auto world = random_scene();
 
-    vec3 lookfrom{13, 2, 3};
-    vec3 lookat{0, 0, 0};
-    vec3 vup{0, 1, 0};
-    auto dist_to_focus = 10.0;
-    auto aperture = 0.1;
+//     vec3 lookfrom{13, 2, 3};
+//     vec3 lookat{0, 0, 0};
+//     vec3 vup{0, 1, 0};
+//     auto dist_to_focus = 10.0;
+//     auto aperture = 0.1;
 
-    camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus);
+//     camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus);
 
-    //render tiles
-    for(int i_y=0;i_y<s->height;i_y+=tile){
-        for(int j_x=0;j_x<s->width;j_x+=tile){
-            int w = min(tile, s->width-j_x);
-            int h = min(tile, s->height-i_y);
+//     //render tiles
+//     for(int i_y=0;i_y<s->height;i_y+=tile){
+//         for(int j_x=0;j_x<s->width;j_x+=tile){
+//             int w = min(tile, s->width-j_x);
+//             int h = min(tile, s->height-i_y);
             
-            //render one tile
-            for(int y=i_y;y<i_y+h;y++){
-                uint8_t* row = out_rgba + y*stride_bytes;
-                int j = (image_height - 1) - y; //map y to j. main code from book repo renders j from height-1 down to 0
-                for(int x=j_x;x<j_x+w;x++){
-                    vec3 pixel_color{0, 0, 0};
-                    for (int sp = 0; sp < samples_per_pixel; ++sp) {
-                        const auto u = (x + random_double()) / image_width;
-                        const auto v = (j + random_double()) / image_height;
+//             //render one tile
+//             for(int y=i_y;y<i_y+h;y++){
+//                 uint8_t* row = out_rgba + y*stride_bytes;
+//                 int j = (image_height - 1) - y; //map y to j. main code from book repo renders j from height-1 down to 0
+//                 for(int x=j_x;x<j_x+w;x++){
+//                     vec3 pixel_color{0, 0, 0};
+//                     for (int sp = 0; sp < samples_per_pixel; ++sp) {
+//                         const auto u = (x + random_double()) / image_width;
+//                         const auto v = (j + random_double()) / image_height;
 
-                        ray r = cam.get_ray(u, v);
-                        pixel_color += ray_color(r, world, max_depth);
-                    }
+//                         ray r = cam.get_ray(u, v);
+//                         pixel_color += ray_color(r, world, max_depth);
+//                     }
 
-                    double scale = 1.0 / samples_per_pixel;
-                    double r = sqrt(scale * pixel_color.x());
-                    double g = sqrt(scale * pixel_color.y());
-                    double b = sqrt(scale * pixel_color.z());
+//                     double scale = 1.0 / samples_per_pixel;
+//                     double r = sqrt(scale * pixel_color.x());
+//                     double g = sqrt(scale * pixel_color.y());
+//                     double b = sqrt(scale * pixel_color.z());
 
-                    uint8_t* px = row + x * 4;
-                    px[0] = to_u8(r);
-                    px[1] = to_u8(g);
-                    px[2] = to_u8(b);
-                    px[3] = 255;
-                }
-            }
-            if(cb!=NULL){
-                uint8_t* tile_ptr = out_rgba + i_y*stride_bytes + 4*j_x;
-                cb(j_x, i_y, w,h,tile_ptr, stride_bytes);
-            }
-        }
-    }
-    return 0;
-}
+//                     uint8_t* px = row + x * 4;
+//                     px[0] = to_u8(r);
+//                     px[1] = to_u8(g);
+//                     px[2] = to_u8(b);
+//                     px[3] = 255;
+//                 }
+//             }
+//             if(cb!=NULL){
+//                 uint8_t* tile_ptr = out_rgba + i_y*stride_bytes + 4*j_x;
+//                 cb(j_x, i_y, w,h,tile_ptr, stride_bytes);
+//             }
+//         }
+//     }
+//     return 0;
+// }
 
 }

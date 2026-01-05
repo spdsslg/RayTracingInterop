@@ -40,8 +40,7 @@ This project exposes **scene-building** functions so the user can render a custo
 - Geometry:
   - `rt_world_add_sphere`
 - Rendering:
-  - `rt_render_scene(settings, world, camera, out_rgba, stride, callback)` renders the scene created through the API
-  - `rt_render(settings, out_rgba, stride, callback)` preset demo scene (book cover), kept for testing
+  - `rt_render_scene(settings, world, camera, out_rgba, stride, callback)` renders the scene 
 
 ## Interop details (unsafe and function pointers)
 
@@ -75,31 +74,6 @@ The callback prints progress like:
 Tile (0,0) 32x32
 Tile (32,0) 32x32
 ...
-```
-
-
-## Project layout
-
-```
-.
-├─ native/
-│  ├─ CMakeLists.txt
-│  ├─ include/
-│  │  └─ rt_capi.h              #C ABI header (extern "C")
-│  └─ src/
-│     ├─ rt_capi.cpp            #C ABI wrapper+render loop+tile callback
-│     └─ book/                  #RTIOW C++ headers(copied from utilForever repo)
-│        ├─ camera.h
-│        ├─ common.h
-│        ├─ ...
-│        └─ vec3.h
-└─ managed/
-   └─ RayTracingInterop/
-      ├─ RayTracingInterop.sln
-      └─ RayTracingInterop/
-         ├─ RayTracingInterop.csproj
-         ├─ Native.cs           # DllImport+delegate* + UnmanagedCallersOnly
-         └─ Program.cs          # alloc buffer, call rt_render, save output.ppm
 ```
 
 
